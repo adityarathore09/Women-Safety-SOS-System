@@ -1,0 +1,46 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User account information and settings.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Unique user ID from Firebase Auth." },
+        "email": { "type": "string", "format": "email", "description": "User's email address." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the user signed up." },
+        "lastLocation": {
+          "type": "object",
+          "properties": {
+            "latitude": { "type": "number" },
+            "longitude": { "type": "number" },
+            "updatedAt": { "type": "string", "format": "date-time" }
+          }
+        }
+      },
+      "required": ["uid", "email"]
+    },
+    "Contact": {
+      "title": "Emergency Contact",
+      "description": "A trusted person to be notified in case of emergency.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Guardian's full name." },
+        "phone": { "type": "string", "description": "Guardian's phone number." },
+        "email": { "type": "string", "format": "email", "description": "Guardian's email address." },
+        "userId": { "type": "string", "description": "The UID of the user who owns this contact." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the contact was added." }
+      },
+      "required": ["name", "phone", "email", "userId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile document."
+    },
+    "/users/{userId}/contacts/{contactId}": {
+      "schema": "Contact",
+      "description": "Emergency contacts for a specific user."
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Safeguard - Women's Safety App",
+  "description": "A comprehensive safety application with SOS alerts, live location sharing, and emergency contact management.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

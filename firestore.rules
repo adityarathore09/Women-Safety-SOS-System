@@ -1,0 +1,94 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: /users/{userId}
+    // Document ID: {userId} (Firebase Auth UID)
+    // Fields:
+    //   - uid: string (required) - Unique user ID
+    //   - email: string (required) - User's email address
+    //   - role: string (optional) - User's role (admin/user)
+    //   - createdAt: timestamp (optional) - When the user signed up
+    //   - lastLocation: map (optional) - User's last known location
+    //
+    // Collection: /users/{userId}/contacts/{contactId}
+    // Document ID: {contactId} (Auto-generated)
+    // Fields:
+    //   - name: string (required) - Guardian's full name
+    //   - phone: string (required) - Guardian's phone number
+    //   - email: string (required) - Guardian's email address
+    //   - userId: string (required) - The UID of the user who owns this contact
+    //   - createdAt: timestamp (optional) - When the contact was added
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+          (request.auth.token.email == "aadirathore09@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    function isValidEmail(email) {
+      return email is string && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+    function isValidUser(data) {
+      return hasRequiredFields(['uid', 'email']) &&
+             data.uid == request.auth.uid &&
+             isValidEmail(data.email) &&
+             (data.uid.size() > 0 && data.uid.size() < 128) &&
+             (data.email.size() > 0 && data.email.size() < 256);
+    }
+
+    function isValidContact(data, userId) {
+      return hasRequiredFields(['name', 'phone', 'email', 'userId']) &&
+             data.userId == userId &&
+             data.userId == request.auth.uid &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.phone is string && data.phone.size() > 0 && data.phone.size() < 20 &&
+             isValidEmail(data.email) && data.email.size() < 256;
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow create: if isOwner(userId) && isValidUser(request.resource.data) && (!('role' in request.resource.data) || request.resource.data.role == 'user');
+      allow update: if (isOwner(userId) && isValidUser(request.resource.data) && (!('role' in request.resource.data) || request.resource.data.role == resource.data.role)) || isAdmin();
+
+      match /contacts/{contactId} {
+        allow read: if isOwner(userId) || isAdmin();
+        allow create: if isOwner(userId) && isValidContact(request.resource.data, userId);
+        allow update: if isOwner(userId) && isValidContact(request.resource.data, userId);
+        allow delete: if isOwner(userId);
+      }
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
