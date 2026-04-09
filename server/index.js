@@ -129,11 +129,10 @@ async function startServer() {
   res.send("Backend is running successfully");
 });
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server running on port ${PORT}`);
+startServer().then(() => {
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 });
-    });
   }
-}
-
-startServer();
+            }
