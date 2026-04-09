@@ -125,6 +125,7 @@ async function startServer() {
       if (req.path.startsWith('/api')) {
         return res.status(404).json({ error: "API route not found" });
       }
+  });
       app.get("/", (req, res) => {
   res.send("Backend is running successfully");
 });
