@@ -333,7 +333,8 @@ export default function Dashboard() {
     }
 
     try {
-      const res = await fetch("/api/sos", {
+      const res = await
+        fetch("https://women-safety-sos-system-1.onrender.com/api/sos", {      
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
