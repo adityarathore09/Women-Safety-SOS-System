@@ -110,7 +110,6 @@ app.post("/api/sos", async (req, res) => {
       warning: warnings.length > 0 ? warnings.join(". ") : null
     });
   });  
-
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
