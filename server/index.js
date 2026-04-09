@@ -108,7 +108,7 @@ app.post("/api/sos", async (req, res) => {
     success: results.sms.length > 0 || results.email.length > 0,
     results,
     warning: warnings.length > 0 ? warnings.join(". ") : null
-  });
+  }
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
