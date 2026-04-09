@@ -125,7 +125,6 @@ async function startServer() {
       }
       res.sendFile(path.join(distPath, "index.html"));
   });
-  }
       app.get("/", (req, res) => {
   res.send("Backend is running successfully");
 });
