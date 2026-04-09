@@ -104,11 +104,13 @@ app.post("/api/sos", async (req, res) => {
   if (!process.env.TWILIO_PHONE_NUMBER) warnings.push("Twilio Phone Number missing");
   if (!canSendEmail) warnings.push("EmailJS credentials missing");
 
-  res.json({
-    success: results.sms.length > 0 || results.email.length > 0,
-    results,
-    warning: warnings.length > 0 ? warnings.join(". ") : null
-  });
+ res.json({
+      success: results.sms.length > 0 || results.email.length > 0,
+      results,
+      warning: warnings.length > 0 ? warnings.join(". ") : null
+    });
+  });  
+
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
