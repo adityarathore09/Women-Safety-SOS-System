@@ -109,7 +109,6 @@ app.post("/api/sos", async (req, res) => {
     results,
     warning: warnings.length > 0 ? warnings.join(". ") : null
   });
-});
 
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
