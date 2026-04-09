@@ -5,9 +5,11 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import twilio from "twilio";
 import emailjs from "@emailjs/nodejs";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -21,9 +23,9 @@ app.post("/api/sos", async (req, res) => {
   }
 
   const results = {
-    sms: [] as string[],
-    email: [] as string[],
-    errors: [] as string[],
+    sms: [],
+    email: [],
+    errors: [],
   };
 
   // Twilio Setup
@@ -64,7 +66,7 @@ app.post("/api/sos", async (req, res) => {
           to: formattedPhone,
         });
         results.sms.push(formattedPhone);
-      } catch (err: any) {
+      } catch (err) {
         console.error(`Twilio Error for ${formattedPhone}:`, err);
         results.errors.push(`SMS to ${formattedPhone} failed: ${err.message || "Unknown error"}`);
       }
@@ -88,7 +90,7 @@ app.post("/api/sos", async (req, res) => {
           }
         );
         results.email.push(contact.email);
-      } catch (err: any) {
+      } catch (err) {
         console.error(`EmailJS Error for ${contact.email}:`, err);
         // EmailJS errors sometimes have a 'text' property instead of 'message'
         const errorMsg = err.message || err.text || "Unknown email error";
