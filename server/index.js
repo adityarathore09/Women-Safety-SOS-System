@@ -109,7 +109,6 @@ app.post("/api/sos", async (req, res) => {
     results,
     warning: warnings.length > 0 ? warnings.join(". ") : null
   });
-
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
@@ -127,8 +126,7 @@ async function startServer() {
   });
       app.get("/", (req, res) => {
   res.send("Backend is running successfully");
-});
-
+}
 startServer().then(() => {
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on port ${PORT}`);
