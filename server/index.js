@@ -76,8 +76,8 @@ app.post("/api/sos", async (req, res) => {
     if (canSendEmail) {
       try {
         await emailjs.send(
-          emailjsConfig.serviceId!,
-          emailjsConfig.templateId!,
+          emailjsConfig.serviceId,
+          emailjsConfig.templateId,
           {
             to_name: contact.name,
             to_email: contact.email,
@@ -85,8 +85,8 @@ app.post("/api/sos", async (req, res) => {
             location_url: locationUrl,
           },
           {
-            publicKey: emailjsConfig.publicKey!,
-            privateKey: emailjsConfig.privateKey!,
+            publicKey: emailjsConfig.publicKey,
+            privateKey: emailjsConfig.privateKey,
           }
         );
         results.email.push(contact.email);
