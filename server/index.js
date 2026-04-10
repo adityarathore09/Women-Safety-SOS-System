@@ -56,7 +56,7 @@ app.post("/api/sos", async (req, res) => {
       // Basic check: if it doesn't start with '+', it might be missing a country code
       if (!formattedPhone.startsWith('+')) {
         // We can't be 100% sure of the country, but we can warn the user
-        console.log(`Warning: Phone number ${formattedPhone} might be missing a country code.`);
+        formattedPhone = '+91' + formattedPhone;
       }
 
       try {
