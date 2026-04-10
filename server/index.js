@@ -124,11 +124,14 @@ async function startServer() {
       if (req.path.startsWith('/api')) {
         return res.status(404).json({ error: "API route not found" });
       }
-      res.sendFile(path.join(distPath, "index.html"));
-  });
-      app.get("/", (req, res) => {
-  res.send("Backend is running successfully");
-});
+     res.sendFile(path.join(distPath, "index.html"));
+    });
+
+    app.get("/", (req, res) => {       
+      res.send("Backend is running successfully");
+    });                                 
+  }                                    
+}                                      
 startServer().then(() => {
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on port ${PORT}`);
