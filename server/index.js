@@ -37,7 +37,7 @@ app.post("/api/sos", async (req, res) => {
     ? `https://www.google.com/maps?q=${location.latitude},${location.longitude}`
     : "Location not available";
 
-  const fullMessage = `${message || "EMERGENCY SOS ALERT!"}\nMy Location: ${locationUrl}`;
+ const fullMessage = `SOS ALERT! Loc: ${locationUrl}`;
 
   // EmailJS Setup
   const emailjsConfig = {
