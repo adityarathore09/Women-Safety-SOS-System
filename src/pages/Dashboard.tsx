@@ -339,7 +339,7 @@ export default function Dashboard() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           location: currentLoc,
-          message: "🚨 EMERGENCY! I need help immediately. This is an automated SOS alert from SafeGuard.",
+          message: "EMERGENCY! I need help immediately.",
           contacts: contacts.map(c => ({ name: c.name, phone: c.phone, email: c.email }))
         }),
       });
