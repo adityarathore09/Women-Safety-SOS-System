@@ -5,6 +5,8 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import twilio from "twilio";
 import emailjs from "@emailjs/nodejs";
+import { config } from "dotenv";
+config(); 
 
 const app = express();
 const PORT = 3000;
