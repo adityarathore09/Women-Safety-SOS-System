@@ -33,11 +33,11 @@ app.post("/api/sos", async (req, res) => {
     ? twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
     : null;
 
-  const locationUrl = location 
-    ? `https://www.google.com/maps?q=${location.latitude},${location.longitude}`
-    : "Location not available";
-
- const fullMessage = `SOS ALERT! Loc: ${locationUrl}`;
+ const locationUrl = location
+  ? `https://maps.google.com/?q=${location.latitude},${location.longitude}`
+  : "No location";
+  
+const fullMessage = `SOS! Help. ${locationUrl}`;
 
   // EmailJS Setup
   const emailjsConfig = {
